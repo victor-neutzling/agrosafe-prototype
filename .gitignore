@@ -1,0 +1,48 @@
+# Python / Django
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# SQLite
+*.sqlite3
+*.sqlite3-journal
+*.db
+
+# Node / frontend
+node_modules/
+dist/
+build/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Docker
+.docker/
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
