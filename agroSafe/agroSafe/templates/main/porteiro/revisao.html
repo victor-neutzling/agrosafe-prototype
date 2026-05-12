@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Porteiro — review manual</title>
+</head>
+<body>
+<p>A foto tirada não bateu com o cadastro no sistema (reconhecimento automático).</p>
+<p>Similaridade obtida: {% if score is not None %}{{ score }}{% else %}—{% endif %} — detalhe técnico: {{ msg|default:"—" }}</p>
+<p>Cadastro: {{ cadastro.nome }} — documento {{ cadastro.documento }}</p>
+<p>A referência está salva como hash facial no sistema (sem arquivo de imagem).</p>
+<p>Review manual do porteiro, com os olhos.</p>
+{% if erro %}
+<p>{{ erro }}</p>
+{% endif %}
+<form method="post" action="">
+{% csrf_token %}
+<p><button type="submit" name="decisao" value="aprovar">Passou na review manual (permitir entrada)</button></p>
+<p><button type="submit" name="decisao" value="negar">Não passou na review manual (negar entrada)</button></p>
+</form>
+<p><a href="{% url 'porteiro_inicio' %}">Voltar ao início do fluxo</a></p>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# Python — bytecode e cache (qualquer pasta __pycache__)
+**/__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Django
+db.sqlite3
+
+.vscode/
+
+# Env
+.env
+venv/
+.venv/

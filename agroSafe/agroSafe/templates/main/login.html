@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - AgroSafe</title>
+    <link rel="stylesheet" href="/static/main/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="right-panel">
+            <form class="login-form" method="post">
+                <h2>Login</h2>
+                {% if erro %}
+                    <div style="color: red; margin-bottom: 10px;">{{ erro }}</div>
+                {% endif %}
+                {% if sucesso %}
+                    <div style="color: green; margin-bottom: 10px;">{{ sucesso }}</div>
+                {% endif %}
+                {% csrf_token %}
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" name="cnpj" required>
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+                <button type="submit">Entrar</button>
+                <div class="login-links">
+                    <a href="/cadastro/" class="login-link">Não possui conta?</a>
+                    <span class="link-sep">|</span>
+                    <a href="/recuperar-senha/" class="login-link">Esqueceu a senha?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

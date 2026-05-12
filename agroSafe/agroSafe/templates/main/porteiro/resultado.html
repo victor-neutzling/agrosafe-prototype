@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Resultado</title>
+</head>
+<body>
+<h1>{{ titulo }}</h1>
+<p>{{ detalhe }}</p>
+<p>Entrada permitida: {% if permitida %}sim{% else %}não{% endif %}</p>
+<p><a href="{% url 'porteiro_inicio' %}">Iniciar outro fluxo</a></p>
+<p><a href="/admin/appbk/registroacessoportaria/">Ver registros no admin</a></p>
+</body>
+</html>

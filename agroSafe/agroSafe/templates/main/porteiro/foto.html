@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Porteiro — foto</title>
+</head>
+<body>
+{% if modo == 'cadastro_novo' %}
+<p>Não existe nome+documento no sistema: após a foto o cadastro é concluído com hash facial e a entrada é permitida (fluxo do diagrama).</p>
+{% else %}
+<p>Já existe cadastro: a foto será comparada com OpenCV usando o hash facial salvo no cadastro.</p>
+{% endif %}
+{% if erro %}
+<p>{{ erro }}</p>
+{% endif %}
+<p>Limite do reconhecimento automático (hash facial): similaridade maior ou igual a {{ threshold }}.</p>
+
+<video id="v" width="640" height="480" autoplay playsinline></video>
+<canvas id="c" width="640" height="480" style="display:none"></canvas>
+<p><button type="button" id="btnCam">Ligar câmera</button>
+<button type="button" id="btnCap">Capturar da câmera para o campo de arquivo</button></p>
+
+<form method="post" enctype="multipart/form-data" id="formFoto">
+{% csrf_token %}
+<p><label>Arquivo de imagem (ou use a captura acima): <input type="file" name="foto" id="inpFoto" accept="image/*"></label></p>
+<p><button type="submit">Enviar foto</button></p>
+</form>
+<p><a href="{% url 'porteiro_inicio' %}">Voltar (nome e documento)</a></p>
+<script>
+(function () {
+	var v = document.getElementById('v');
+	var c = document.getElementById('c');
+	var inp = document.getElementById('inpFoto');
+	var stream = null;
+	document.getElementById('btnCam').onclick = function () {
+		if (stream) {
+			stream.getTracks().forEach(function (t) { t.stop(); });
+			stream = null;
+		}
+		if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+			alert('getUserMedia não disponível neste navegador.');
+			return;
+		}
+		navigator.mediaDevices.getUserMedia({ video: true }).then(function (s) {
+			stream = s;
+			v.srcObject = s;
+		}).catch(function (e) {
+			alert('Câmera: ' + e);
+		});
+	};
+	document.getElementById('btnCap').onclick = function () {
+		if (!v.srcObject) {
+			alert('Ligue a câmera primeiro.');
+			return;
+		}
+		c.getContext('2d').drawImage(v, 0, 0, c.width, c.height);
+		c.toBlob(function (blob) {
+			if (!blob) {
+				alert('Falha ao gerar imagem.');
+				return;
+			}
+			var file = new File([blob], 'captura.jpg', { type: 'image/jpeg' });
+			var dt = new DataTransfer();
+			dt.items.add(file);
+			inp.files = dt.files;
+		}, 'image/jpeg', 0.92);
+	};
+})();
+</script>
+</body>
+</html>

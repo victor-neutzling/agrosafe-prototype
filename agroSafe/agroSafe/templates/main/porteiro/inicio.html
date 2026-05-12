@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Porteiro — nome e documento</title>
+</head>
+<body>
+<p>Visitante chegou: informe nome completo, documento, empresa e nível.</p>
+{% if erro %}
+<p>{{ erro }}</p>
+{% endif %}
+<form method="post" action="">
+{% csrf_token %}
+<p><label>Nome completo <input type="text" name="nome" required maxlength="100"></label></p>
+<p><label>Documento <input type="text" name="documento" required maxlength="64"></label></p>
+<p><label>Empresa <input type="text" name="empresa" required maxlength="100"></label></p>
+<p><label>Nível <select name="nivel" required>
+	<option value="" disabled selected>Selecione…</option>
+	<option value="trabalhador">Trabalhador</option>
+	<option value="prestador_servico">Prestador de Serviço</option>
+	<option value="visitante">Visitante</option>
+</select></label></p>
+<p><button type="submit">Verificar / continuar</button></p>
+</form>
+</body>
+</html>

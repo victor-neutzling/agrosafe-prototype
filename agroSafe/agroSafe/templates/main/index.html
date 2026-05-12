@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de Login</title>
+<link rel="stylesheet" href="{% static 'main/style.css' %}">
+<body>
+    <div class="container">
+        <div class="right-panel">
+            <form class="login-form">
+                <h2>Cadastro</h2>
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" required>
+                <label for="cnpj">CNPJ</label>
+                <input type="text" id="cnpj" name="cnpj" required>
+                <label for="senha">Senha</label>
+                <input type="password" id="senha" name="senha" required>
+                <button type="submit">Cadastrar</button>
+                <div class="login-links">
+                    <a href="#" class="login-link">Ja possui conta?</a>
+                    <span class="link-sep">|</span>
+                    <a href="#" class="login-link">esqueceu a senha?</a>
+                </div>
+            </form>
+        </div>
+    </div>
+<script src="{% static 'main/script.js' %}"></script></head>
+</body>
+</html>
