@@ -1,14 +1,8 @@
-import {
-  Modal,
-  ModalDialog,
-  Box,
-  Button,
-  Typography,
-  Alert,
-} from "@mui/joy";
+import { Modal, ModalDialog, Box, Button, Typography, Alert } from "@mui/joy";
 import { ZoomableImage } from "./zoomable-image";
 import { useManualReview } from "../../../hooks/use-visitors";
 import { extractApiError } from "../../../lib/api";
+import { toast } from "sonner";
 
 interface ManualVerificationModalProps {
   open: boolean;
@@ -42,6 +36,9 @@ export function ManualVerificationModal({
       {
         onSuccess: (response) => {
           onResolved?.(decisao, response.mensagem);
+          toast(decisao === "aprovar" ? "Acesso permitido" : "Acesso negado", {
+            position: "top-right",
+          });
         },
       },
     );
@@ -69,16 +66,11 @@ export function ManualVerificationModal({
               px: 2,
               py: 1.5,
               display: "flex",
-              justifyContent: "space-between",
+              justifyContent: "flex-start",
               alignItems: "center",
             }}
           >
             <Typography fontWeight="bold">Verificação manual</Typography>
-            {typeof score === "number" && (
-              <Typography level="body-sm" sx={{ color: "neutral.600" }}>
-                Correlação: {score.toFixed(3)}
-              </Typography>
-            )}
           </Box>
 
           {errorMessage && (

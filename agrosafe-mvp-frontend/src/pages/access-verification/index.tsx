@@ -27,12 +27,10 @@ import {
 import { ACCESS_CONTROL_FORM_DEFAULT_VALUES } from "./access-verification.constants";
 import { CameraFeedPanel } from "./components/camera-feed-panel";
 import { useTempImageStore } from "../../stores/use-temp-image-store";
-import {
-  useVerifyVisitor,
-  useVisitorLookup,
-} from "../../hooks/use-visitors";
+import { useVerifyVisitor, useVisitorLookup } from "../../hooks/use-visitors";
 import { stripDoc, type Visitor } from "../../api/visitors";
 import { extractApiError } from "../../lib/api";
+import { toast } from "sonner";
 
 type ResultBanner =
   | { kind: "success"; message: string }
@@ -60,9 +58,15 @@ export default function AccessVerification() {
   } = form;
 
   const watchedDocument = useWatch({ control, name: "document" }) ?? "";
-  const normalizedDoc = useMemo(() => stripDoc(watchedDocument), [watchedDocument]);
+  const normalizedDoc = useMemo(
+    () => stripDoc(watchedDocument),
+    [watchedDocument],
+  );
 
-  const lookupQuery = useVisitorLookup(normalizedDoc, normalizedDoc.length >= 11);
+  const lookupQuery = useVisitorLookup(
+    normalizedDoc,
+    normalizedDoc.length >= 11,
+  );
   const visitor: Visitor | null = lookupQuery.data ?? null;
   const visitorMissing =
     normalizedDoc.length >= 11 &&
@@ -107,12 +111,18 @@ export default function AccessVerification() {
           if (response.status === "match") {
             setResult({ kind: "success", message: response.mensagem });
             resetVerification();
+            toast("Verificação facial OK, acesso permitido", {
+              position: "top-right",
+            });
           } else if (response.status === "bloqueado") {
             setResult({ kind: "warning", message: response.mensagem });
             resetVerification();
+            toast(response.mensagem, { position: "top-right" });
           } else {
-            // sem_match → manual review; clear only after the gatekeeper resolves the modal
             setOpenManualModal(true);
+            toast("Acesso negado, realize a verificação manual das imagens.", {
+              position: "top-right",
+            });
           }
         },
         onError: (err) => {
@@ -218,11 +228,6 @@ export default function AccessVerification() {
                 {errors.document && (
                   <FormHelperText sx={{ color: "danger.500" }}>
                     {errors.document.message}
-                  </FormHelperText>
-                )}
-                {visitor && (
-                  <FormHelperText sx={{ color: "neutral.600" }}>
-                    {visitor.nome} • {visitor.empresa} • nível {visitor.nivel}
                   </FormHelperText>
                 )}
               </FormGroup>
